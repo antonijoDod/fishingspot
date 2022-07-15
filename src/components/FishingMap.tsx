@@ -7,10 +7,14 @@ import Map, {
   ScaleControl,
   GeolocateControl,
 } from "react-map-gl";
+import mapboxgl from "mapbox-gl";
 import { Box } from "@mui/system";
-import Button from "@mui/material/Button";
-
 import { Pin } from "../components";
+import Button from "@mui/material/Button";
+// @ts-ignore eslint-disable-next-line import/no-webpack-loader-syntax
+mapboxgl.workerClass =
+  // eslint-disable-next-line import/no-webpack-loader-syntax
+  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 type TPlaces = {
   id: string | number;
