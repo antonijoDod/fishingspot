@@ -108,7 +108,7 @@ export default function FishingMap() {
                   Wikipedia
                 </a>
               </div>
-              <img width="100%" src={popupInfo.image} />
+              <img width="100%" src={popupInfo.image} alt="Alt 1" />
             </Popup>
           )}
         </Map>
