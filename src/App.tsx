@@ -2,26 +2,12 @@ import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Routes, Route } from "react-router-dom";
-import Typography from "@mui/material/Typography";
-import Link from "@mui/material/Link";
 import Login from "pages/login";
 import Layout from "./components/Layout";
 import NotFound from "pages/notFound";
 import Settings from "./pages/settings";
 import Spots from "./pages/spots";
 import Places from "./pages/places";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center">
-      {"Copyright © "}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
-      </Link>{" "}
-      {new Date().getFullYear()}.
-    </Typography>
-  );
-}
 
 let theme = createTheme({
   palette: {
