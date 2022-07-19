@@ -9,19 +9,29 @@ import {
   CardActions,
 } from "@mui/material";
 
-const PlaceCard = () => {
+const PlaceCard = ({
+  title,
+  imageUrl,
+}: {
+  title: string;
+  imageUrl: string | undefined;
+}) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardActionArea>
         <CardMedia
           component="img"
           height="140"
-          image="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/13/f4/1c/6c/aragvi-river.jpg?w=1200&h=-1&s=1"
+          image={
+            typeof imageUrl === "string"
+              ? `http://localhost:1337${imageUrl}`
+              : ""
+          }
           alt="green iguana"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="div">
-            Lizard
+            {title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Ballyconnell

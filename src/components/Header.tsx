@@ -13,6 +13,7 @@ import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Tooltip from "@mui/material/Tooltip";
 import Typography from "@mui/material/Typography";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -22,6 +23,7 @@ interface HeaderProps {
 
 export default function Header(props: HeaderProps) {
   const { onDrawerToggle } = props;
+  const { pathname } = useLocation();
 
   return (
     <React.Fragment>
@@ -111,7 +113,7 @@ export default function Header(props: HeaderProps) {
         elevation={0}
         sx={{ zIndex: 0 }}
       >
-        <Tabs value={0} textColor="inherit">
+        <Tabs textColor="inherit" value={pathname === "/" ? 0 : 1}>
           <Tab label="Map" component={Link} to="/" />
           <Tab label="Places" component={Link} to="/places" />
         </Tabs>

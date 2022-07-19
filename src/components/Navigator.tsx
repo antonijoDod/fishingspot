@@ -10,7 +10,7 @@ import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import DnsRoundedIcon from "@mui/icons-material/DnsRounded";
 import PermMediaOutlinedIcon from "@mui/icons-material/PhotoSizeSelectActual";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 const categories = [
   {
@@ -45,6 +45,8 @@ const itemCategory = {
 export default function Navigator(props: DrawerProps) {
   const { ...other } = props;
 
+  const { pathname } = useLocation();
+
   return (
     <Drawer variant="permanent" {...other}>
       <List disablePadding>
@@ -67,7 +69,7 @@ export default function Navigator(props: DrawerProps) {
             {children.map(({ id: childId, icon, link, active }) => (
               <RouterLink to={link}>
                 <ListItem disablePadding key={childId}>
-                  <ListItemButton selected={active} sx={item}>
+                  <ListItemButton selected={pathname === link} sx={item}>
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText>{childId}</ListItemText>
                   </ListItemButton>

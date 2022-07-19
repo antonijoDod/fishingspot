@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Map, {
   Marker,
   Popup,
@@ -10,57 +10,27 @@ import Map, {
 import mapboxgl from "mapbox-gl";
 import { Box } from "@mui/system";
 import { Pin } from "../components";
-import Button from "@mui/material/Button";
+import axios from "axios";
+import { TPlaces, TPlace } from "types/places";
 // @ts-ignore eslint-disable-next-line import/no-webpack-loader-syntax
 mapboxgl.workerClass =
   // eslint-disable-next-line import/no-webpack-loader-syntax
   require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
-type TPlaces = {
-  id: string | number;
-  place: string;
-  image: string;
-  latitude: number;
-  longitude: number;
-};
-
 export default function FishingMap() {
-  const [popupInfo, setPopupInfo] = useState<TPlaces | null>(null);
+  const [popupInfo, setPopupInfo] = useState<TPlace | null>(null);
+  const [places, setPlaces] = useState<TPlace[] | null>(null);
 
-  const [places, setPlaces] = useState<TPlaces[] | []>([
-    {
-      id: 1,
-      place: "Kod rijeke",
-      image:
-        "https://eartheclipse.com/wp-content/uploads/2019/05/torrent-white-water-force-nature-river.jpg",
-      latitude: 53.989719,
-      longitude: -7.363332,
-    },
-  ]);
-  console.log(
-    "🚀 ~ file: FishingMap.tsx ~ line 36 ~ FishingMap ~ places",
-    places
-  );
+  useEffect(() => {
+    getPlaces();
+  }, []);
 
-  function handleLocateMe() {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function ({ coords }) {
-        setPlaces([
-          ...places,
-          {
-            id: 2,
-            place: "Place 2",
-            image:
-              "https://res.cloudinary.com/dtpgi0zck/image/upload/s--U2ixWCco--/c_fill,h_580,w_860/v1/EducationHub/photos/grand-canyon-colorado-river.jpg",
-            latitude: coords.latitude,
-            longitude: coords.longitude,
-          },
-        ]);
-      });
-    } else {
-      console.log("Not Available");
-    }
-  }
+  const getPlaces = async () => {
+    const res = await axios.get<TPlaces>(
+      `${process.env.REACT_APP_BACKEND_SERVER}/api/places?populate=*`
+    );
+    setPlaces(res.data.data);
+  };
 
   return (
     <>
@@ -74,7 +44,7 @@ export default function FishingMap() {
             pitch: 0,
           }}
           mapStyle="mapbox://styles/mapbox/streets-v9?access_token=TOKEN"
-          mapboxAccessToken="pk.eyJ1IjoidG9ueTIzcHJvIiwiYSI6ImNsNWw4bXk3aTBoZ2czZW8xOWFmdW1iZnYifQ.kmNr4gy5UUuuDQC7U8DoWg"
+          mapboxAccessToken={process.env.REACT_APP_MAPBOX_API}
         >
           <GeolocateControl position="top-left" />
           <FullscreenControl position="top-left" />
@@ -84,8 +54,8 @@ export default function FishingMap() {
           {places?.map((place, index) => (
             <Marker
               key={`marker-${index}`}
-              longitude={place.longitude}
-              latitude={place.latitude}
+              longitude={place.attributes.longitude}
+              latitude={place.attributes.latitude}
               anchor="bottom"
               onClick={(e) => {
                 e.originalEvent.stopPropagation();
@@ -99,31 +69,20 @@ export default function FishingMap() {
           {popupInfo && (
             <Popup
               anchor="top"
-              longitude={Number(popupInfo.longitude)}
-              latitude={Number(popupInfo.latitude)}
+              longitude={Number(popupInfo.attributes.longitude)}
+              latitude={Number(popupInfo.attributes.latitude)}
               onClose={() => setPopupInfo(null)}
             >
-              <div>
-                {popupInfo.place} |{" "}
-                <a
-                  target="_new"
-                  href={`http://en.wikipedia.org/w/index.php?title=Special:Search&search=${popupInfo.place}`}
-                >
-                  Wikipedia
-                </a>
-              </div>
-              <img width="100%" src={popupInfo.image} alt="Alt 1" />
+              <div>{popupInfo.attributes.title} | </div>
+              <img
+                width="100%"
+                src={`http://localhost:1337${popupInfo.attributes.featured_image.data?.attributes.formats.thumbnail.url}`}
+                alt="Alt 1"
+              />
             </Popup>
           )}
         </Map>
       </Box>
-      <Button
-        sx={{ marginTop: "1rem" }}
-        variant="contained"
-        onClick={handleLocateMe}
-      >
-        Locate me
-      </Button>
     </>
   );
 }

@@ -2,12 +2,14 @@ import * as React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { Routes, Route } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Login from "pages/login";
 import Layout from "./components/Layout";
 import NotFound from "pages/notFound";
 import Settings from "./pages/settings";
 import Spots from "./pages/spots";
 import Places from "./pages/places";
+import NewPlace from "./pages/newPlace";
 
 let theme = createTheme({
   palette: {
@@ -152,21 +154,26 @@ theme = {
   },
 };
 
+const queryClient = new QueryClient();
+
 export default function App() {
   const isSmUp = useMediaQuery(theme.breakpoints.up("sm"));
 
   return (
-    <ThemeProvider theme={theme}>
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        {/* Use LAYOUT component when user is sign in */}
-        <Route path="/" element={<Layout isSmUp={isSmUp} />}>
-          <Route index element={<Spots />} />
-          <Route path="/places" element={<Places />} />
-          <Route path="/settings" element={<Settings />} />
-        </Route>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {/* Use LAYOUT component when user is sign in */}
+          <Route path="/" element={<Layout isSmUp={isSmUp} />}>
+            <Route index element={<Spots />} />
+            <Route path="/places" element={<Places />} />
+            <Route path="/places/new" element={<NewPlace />} />
+            <Route path="/settings" element={<Settings />} />
+          </Route>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
