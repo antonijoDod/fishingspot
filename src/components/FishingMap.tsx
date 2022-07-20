@@ -19,6 +19,10 @@ mapboxgl.workerClass =
 
 export default function FishingMap() {
   const [popupInfo, setPopupInfo] = useState<TPlace | null>(null);
+  console.log(
+    "🚀 ~ file: FishingMap.tsx ~ line 22 ~ FishingMap ~ popupInfo",
+    popupInfo
+  );
   const [places, setPlaces] = useState<TPlace[] | null>(null);
 
   useEffect(() => {
@@ -76,7 +80,10 @@ export default function FishingMap() {
               <div>{popupInfo.attributes.title} | </div>
               <img
                 width="100%"
-                src={`http://localhost:1337${popupInfo.attributes.featured_image.data?.attributes.formats.thumbnail.url}`}
+                src={
+                  popupInfo.attributes.featured_image.data?.attributes.formats
+                    .thumbnail.url
+                }
                 alt="Alt 1"
               />
             </Popup>
