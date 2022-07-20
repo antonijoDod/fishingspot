@@ -12,11 +12,10 @@ import { useLocation } from "react-router-dom";
 import { useAuth } from "hooks/useAuth";
 
 interface HeaderProps {
-  pageTitle: string;
   onDrawerToggle: () => void;
 }
 
-const Header = ({ pageTitle, onDrawerToggle }: HeaderProps) => {
+const Header = ({ onDrawerToggle }: HeaderProps) => {
   const auth = useAuth();
   const { pathname } = useLocation();
 
@@ -53,9 +52,11 @@ const Header = ({ pageTitle, onDrawerToggle }: HeaderProps) => {
         <Toolbar>
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
-              <Typography color="inherit" variant="h5" component="h1">
-                {pageTitle}
-              </Typography>
+              <Typography
+                color="inherit"
+                variant="h5"
+                component="h1"
+              ></Typography>
             </Grid>
           </Grid>
         </Toolbar>

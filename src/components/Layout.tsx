@@ -20,13 +20,7 @@ function Copyright() {
 
 const drawerWidth = 256;
 
-const Layout = ({
-  isSmUp,
-  pageTitle,
-}: {
-  isSmUp: boolean;
-  pageTitle: string;
-}) => {
+const Layout = ({ isSmUp }: { isSmUp: boolean }) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -54,7 +48,7 @@ const Layout = ({
         />
       </Box>
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Header pageTitle={pageTitle} onDrawerToggle={handleDrawerToggle} />
+        <Header onDrawerToggle={handleDrawerToggle} />
         <Box
           component="main"
           sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
