@@ -1,13 +1,24 @@
 import React, { useState } from "react";
+import SendIcon from "@mui/icons-material/Send";
 import { Box, Grid, Typography, TextField, Button } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import Uploady, { useItemFinishListener } from "@rpldy/uploady";
 import UploadButton from "@rpldy/upload-button";
 import UploadPreview from "@rpldy/upload-preview";
 import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
 
 type TForm = {
   title: string;
+};
+
+type TMutation = {
+  data: {
+    title: string;
+    featured_image: number | null;
+    longitude: number | undefined;
+    latitude: number | undefined;
+  };
 };
 
 const GetResponseComp = ({ onUpload }: { onUpload: (x: any) => void }) => {
@@ -24,7 +35,7 @@ const NewPlace = () => {
 
   const { handleSubmit, control } = useForm<TForm>();
   const onSubmit = async (data: any) => {
-    await axios.post("http://localhost:1337/api/places", {
+    mutation.mutate({
       data: {
         title: data.title,
         featured_image: imageId,
@@ -34,7 +45,16 @@ const NewPlace = () => {
     });
   };
 
-  function handleLocateMe() {
+  const createPlace = async (data: TMutation): Promise<Response> => {
+    return await axios.post(
+      `${process.env.REACT_APP_BACKEND_SERVER}/api/places`,
+      data
+    );
+  };
+
+  const mutation = useMutation<Response, unknown, TMutation>(createPlace);
+
+  const handleLocateMe = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition(function ({ coords }) {
         setLatitude(coords.latitude);
@@ -43,7 +63,7 @@ const NewPlace = () => {
     } else {
       console.log("Not Available");
     }
-  }
+  };
 
   return (
     <Box>
@@ -53,7 +73,9 @@ const NewPlace = () => {
       <Grid container>
         <Grid item>
           <Uploady
-            destination={{ url: "http://localhost:1337/api/upload" }}
+            destination={{
+              url: `${process.env.REACT_APP_BACKEND_SERVER}/api/upload`,
+            }}
             accept="image/*"
             inputFieldName="files"
           >
@@ -65,7 +87,7 @@ const NewPlace = () => {
           </Uploady>
 
           <Button
-            sx={{ marginTop: "1rem" }}
+            sx={{ marginY: "1rem" }}
             variant="contained"
             onClick={handleLocateMe}
           >
@@ -91,6 +113,8 @@ const NewPlace = () => {
               variant="contained"
               sx={{ marginTop: "1rem" }}
               onClick={handleSubmit(onSubmit)}
+              endIcon={<SendIcon />}
+              disabled={mutation.isLoading}
             >
               Submit
             </Button>

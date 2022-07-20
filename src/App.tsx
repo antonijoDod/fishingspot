@@ -171,7 +171,7 @@ export default function App() {
             <Route path="/places/new" element={<NewPlace />} />
             <Route path="/settings" element={<Settings />} />
           </Route>
-          <Route path="*" element={<NotFound />} />
+          <Route path="/*" element={<NotFound />} />
         </Routes>
       </ThemeProvider>
     </QueryClientProvider>
