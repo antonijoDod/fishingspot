@@ -22,11 +22,7 @@ const PlaceCard = ({
         <CardMedia
           component="img"
           height="140"
-          image={
-            typeof imageUrl === "string"
-              ? `http://localhost:1337${imageUrl}`
-              : ""
-          }
+          image={typeof imageUrl === "string" ? imageUrl : ""}
           alt="green iguana"
         />
         <CardContent>

@@ -10,6 +10,8 @@ import Settings from "./pages/settings";
 import Spots from "./pages/spots";
 import Places from "./pages/places";
 import NewPlace from "./pages/newPlace";
+import AuthProvider from "context/authContext";
+import ProtectedRoute from "route/ProtectedRoute";
 
 let theme = createTheme({
   palette: {
@@ -161,19 +163,28 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          {/* Use LAYOUT component when user is sign in */}
-          <Route path="/" element={<Layout isSmUp={isSmUp} />}>
-            <Route index element={<Spots />} />
-            <Route path="/places" element={<Places />} />
-            <Route path="/places/new" element={<NewPlace />} />
-            <Route path="/settings" element={<Settings />} />
-          </Route>
-          <Route path="/*" element={<NotFound />} />
-        </Routes>
-      </ThemeProvider>
+      <AuthProvider>
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route path="/login" element={<Login />} />
+            {/* Use LAYOUT component when user is sign in */}
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <Layout isSmUp={isSmUp} />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<Spots />} />
+              <Route path="/places" element={<Places />} />
+              <Route path="/places/new" element={<NewPlace />} />
+              <Route path="/settings" element={<Settings />} />
+            </Route>
+            <Route path="/*" element={<NotFound />} />
+          </Routes>
+        </ThemeProvider>
+      </AuthProvider>
     </QueryClientProvider>
   );
 }

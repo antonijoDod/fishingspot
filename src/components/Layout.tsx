@@ -20,7 +20,13 @@ function Copyright() {
 
 const drawerWidth = 256;
 
-export default function Layout({ isSmUp }: { isSmUp: boolean }) {
+const Layout = ({
+  isSmUp,
+  pageTitle,
+}: {
+  isSmUp: boolean;
+  pageTitle: string;
+}) => {
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -48,7 +54,7 @@ export default function Layout({ isSmUp }: { isSmUp: boolean }) {
         />
       </Box>
       <Box sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <Header onDrawerToggle={handleDrawerToggle} />
+        <Header pageTitle={pageTitle} onDrawerToggle={handleDrawerToggle} />
         <Box
           component="main"
           sx={{ flex: 1, py: 6, px: 4, bgcolor: "#eaeff1" }}
@@ -61,4 +67,6 @@ export default function Layout({ isSmUp }: { isSmUp: boolean }) {
       </Box>
     </Box>
   );
-}
+};
+
+export default Layout;
