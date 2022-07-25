@@ -56,10 +56,24 @@ const NewPlace = () => {
 
   const handleLocateMe = () => {
     if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(function ({ coords }) {
+      /* navigator.geolocation.getCurrentPosition(function ({ coords }) {
         setLatitude(coords.latitude);
         setLongitude(coords.longitude);
-      });
+      }); */
+      navigator.geolocation.getCurrentPosition(
+        function ({ coords }) {
+          setLatitude(coords.latitude);
+          setLongitude(coords.longitude);
+        },
+        function (error) {
+          console.log(error);
+        },
+        {
+          maximumAge: 0,
+          timeout: 20000,
+          enableHighAccuracy: true,
+        }
+      );
     } else {
       console.log("Not Available");
     }
