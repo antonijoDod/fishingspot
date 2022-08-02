@@ -1,11 +1,15 @@
 import React, { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { useAuth } from "hooks/useAuth";
+import { useAuthContext } from "hooks/useAuthContext";
 
 const ProtectedRoute = ({ children }: { children: ReactNode }) => {
-  const value = useAuth();
+  const { user } = useAuthContext();
+  console.log(
+    "🚀 ~ file: ProtectedRoute.tsx ~ line 7 ~ ProtectedRoute ~ user",
+    user
+  );
 
-  if (value?.userInfo === undefined || !value?.userInfo.jwt) {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 

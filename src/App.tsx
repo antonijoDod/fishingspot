@@ -10,7 +10,7 @@ import Settings from "./pages/settings";
 import Spots from "./pages/spots";
 import Places from "./pages/places";
 import NewPlace from "./pages/newPlace";
-import AuthProvider from "context/authContext";
+import AuthContextProvider from "context/AuthContext";
 import ProtectedRoute from "route/ProtectedRoute";
 
 let theme = createTheme({
@@ -163,7 +163,7 @@ export default function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <AuthContextProvider>
         <ThemeProvider theme={theme}>
           <Routes>
             <Route path="/login" element={<Login />} />
@@ -184,7 +184,7 @@ export default function App() {
             <Route path="/*" element={<NotFound />} />
           </Routes>
         </ThemeProvider>
-      </AuthProvider>
+      </AuthContextProvider>
     </QueryClientProvider>
   );
 }

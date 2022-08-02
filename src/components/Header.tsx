@@ -1,22 +1,23 @@
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Grid from "@mui/material/Grid";
-import IconButton from "@mui/material/IconButton";
 import { Link } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import { Logout } from "@mui/icons-material";
 import Tab from "@mui/material/Tab";
 import Tabs from "@mui/material/Tabs";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useLocation } from "react-router-dom";
-import { useAuth } from "hooks/useAuth";
+import { useAuthContext } from "hooks/useAuthContext";
+import { IconButton } from "@mui/material";
 
 interface HeaderProps {
   onDrawerToggle: () => void;
 }
 
 const Header = ({ onDrawerToggle }: HeaderProps) => {
-  const auth = useAuth();
+  const { user, dispatch } = useAuthContext();
   const { pathname } = useLocation();
 
   return (
@@ -37,7 +38,14 @@ const Header = ({ onDrawerToggle }: HeaderProps) => {
             <Grid item xs />
 
             <Grid item>
-              <Typography>Hi, {auth?.userInfo?.user.username}.</Typography>
+              {user && <Typography>Hi, {user.user.username}.</Typography>}
+              <IconButton
+                aria-label="logout"
+                color="inherit"
+                onClick={() => dispatch({ type: "LOGOUT" })}
+              >
+                <Logout />
+              </IconButton>
             </Grid>
           </Grid>
         </Toolbar>

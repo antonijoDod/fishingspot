@@ -7,22 +7,14 @@ import Map, {
   ScaleControl,
   GeolocateControl,
 } from "react-map-gl";
-import mapboxgl from "mapbox-gl";
 import { Box } from "@mui/system";
 import { Pin } from "../components";
 import axios from "axios";
 import { TPlaces, TPlace } from "types/places";
-// @ts-ignore eslint-disable-next-line import/no-webpack-loader-syntax
-mapboxgl.workerClass =
-  // eslint-disable-next-line import/no-webpack-loader-syntax
-  require("worker-loader!mapbox-gl/dist/mapbox-gl-csp-worker").default;
 
 export default function FishingMap() {
   const [popupInfo, setPopupInfo] = useState<TPlace | null>(null);
-  console.log(
-    "🚀 ~ file: FishingMap.tsx ~ line 22 ~ FishingMap ~ popupInfo",
-    popupInfo
-  );
+
   const [places, setPlaces] = useState<TPlace[] | null>(null);
 
   useEffect(() => {
