@@ -10,6 +10,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { useLocation } from "react-router-dom";
 import { useAuthContext } from "hooks/useAuthContext";
+import { useLogout } from "hooks/useLogout";
 import { IconButton } from "@mui/material";
 
 interface HeaderProps {
@@ -17,8 +18,9 @@ interface HeaderProps {
 }
 
 const Header = ({ onDrawerToggle }: HeaderProps) => {
-  const { user, dispatch } = useAuthContext();
+  const { user } = useAuthContext();
   const { pathname } = useLocation();
+  const { logout } = useLogout();
 
   return (
     <React.Fragment>
@@ -42,7 +44,7 @@ const Header = ({ onDrawerToggle }: HeaderProps) => {
               <IconButton
                 aria-label="logout"
                 color="inherit"
-                onClick={() => dispatch({ type: "LOGOUT" })}
+                onClick={() => logout()}
               >
                 <Logout />
               </IconButton>

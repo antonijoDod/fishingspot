@@ -9,9 +9,11 @@ const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // If user is logged in, redirect to dashboard
     if (user) {
       navigate("/");
     }
+    // eslint-disable-next-line
   }, []);
 
   return (

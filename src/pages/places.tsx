@@ -9,25 +9,11 @@ import {
 } from "@mui/material";
 import { PlaceCard } from "components";
 import { Link as RouterLink } from "react-router-dom";
-import axios from "axios";
-import { TPlaces } from "types/places";
-import { useQuery } from "@tanstack/react-query";
+import { useGetPlaces } from "hooks/usePlace";
 
 const Places = () => {
   const [page, setPage] = useState<number>(1);
-
-  const getPlaces = async (): Promise<TPlaces> => {
-    const response = await axios.get(
-      `${process.env.REACT_APP_BACKEND_SERVER}/api/places?populate=*&pagination[page]=${page}&pagination[pageSize]=8`
-    );
-    return response.data;
-  };
-
-  const {
-    data: placesData,
-    isLoading: placesIsLoading,
-    isError: placesIsError,
-  } = useQuery(["places", page], getPlaces);
+  const { places, isError, isLoading } = useGetPlaces(page);
 
   const handlePaginationChange = (
     event: React.ChangeEvent<unknown>,
@@ -52,11 +38,11 @@ const Places = () => {
       </Box>
       <Stack spacing={2}>
         <Grid container spacing={2}>
-          {placesIsLoading && <CircularProgress />}
-          {placesIsError && "Error is occurred"}
-          {placesData !== undefined && placesData?.data.length > 0 ? (
+          {isLoading && <CircularProgress />}
+          {isError && "Error is occurred"}
+          {places !== undefined && places?.data.length > 0 ? (
             <>
-              {placesData?.data.map((place) => (
+              {places?.data.map((place) => (
                 <Grid item xs={6} md={3} key={place.id}>
                   <PlaceCard
                     title={place.attributes.title}
@@ -73,8 +59,8 @@ const Places = () => {
           )}
         </Grid>
         <Pagination
-          count={placesData?.meta.pagination.pageCount}
-          page={placesData?.meta.pagination.page || 1}
+          count={places?.meta.pagination.pageCount}
+          page={places?.meta.pagination.page || 1}
           onChange={handlePaginationChange}
         />
       </Stack>
